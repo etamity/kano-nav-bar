@@ -154,6 +154,7 @@ Custom property | Description | Default
     :host kano-drop-down {
         position: absolute;
         top: 100%;
+        left: 0px;
     }
     :host .link:hover,
     :host .link:focus {
@@ -630,9 +631,9 @@ Custom property | Description | Default
         },
         _onDocumentTap (e) {
             let dropDowns = this.querySelectorAll('kano-drop-down');
-            dropDowns.forEach((dd) => {
-                dd.close();
-            });
+            for (let i = 0; i < dropDowns.length; i++) {
+                dropDowns[i].close();
+            }
         },
         _login () {
             this.fire('login');
@@ -662,11 +663,11 @@ Custom property | Description | Default
             targetDDId = triggerId.replace('-button', '-drop-down');
             dropDown = this.$[targetDDId];
 
-            dropDowns.forEach((dd) => {
-                if (dd !== dropDown) {
-                    dd.close();
+            for (let i = 0; i < dropDowns.length; i++) {
+                if (dropDowns[i] !== dropDown) {
+                    dropDowns[i].close();
                 }
-            });
+            }
 
             if (dropDown) {
                 dropDown.toggle();
