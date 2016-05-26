@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="stylesheet" href="./css/icons.css" media="screen" title="no title" charset="utf-8">
+        <link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+        <link rel="import" href="../../paper-toast/paper-toast.html">
+        <link rel="import" href="../kano-nav-bar.html">
+        <style is="custom-style">
+            html, body {
+                margin: 0px;
+                padding: 0px;
+                background-color: #fbfbfb;
+                width: 100vw;
+                height: 100vh;
+                font-family: Arial;
+                @apply(--layout-vertical);
+                @apply(--layout-justified);
+            }
+            kano-nav-bar:nth-of-type(1) {
+                z-index: 3;
+            }
+            kano-nav-bar:nth-of-type(2) {
+                z-index: 2;
+            }
+            kano-nav-bar:nth-of-type(3) {
+                z-index: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <template is="dom-bind" id="bind">
+            <kano-nav-bar user="[[user1]]" xp="700" notifications="[[notifications1]]" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
+            <kano-nav-bar user="[[user2]]" xp="100" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
+            <kano-nav-bar xp="1200" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
+            <paper-toast id="toast"></paper-toast>
+        </template>
+        <script type="text/javascript">
+            function notify (message) {
+                let toast = document.getElementById('toast');
+                toast.show(message);
+            }
+            var bind = document.getElementById('bind');
+            bind.user1 = {
+                avatar: {
+                    urls: {
+                        circle: 'http://vignette2.wikia.nocookie.net/filthy-frank/images/8/8d/516c32f08e03d.png/revision/latest?cb=20151019010624'
+                    }
+                },
+                username: 'CageMan',
+                admin_level: 10
+            };
+            bind.user2 = {
+                avatar: {
+                    urls: {
+                        circle: 'http://johncena.xyz/assets/button.png'
+                    }
+                },
+                username: 'JohnCena'
+            };
+            bind.notifications1 = [{
+                id: 'notification-1',
+                title: 'Something happened',
+                category: 'notification',
+                time: '5m',
+                read: false,
+                type: 'shares',
+                url: 'http://url.com',
+                meta: {
+                    item: {
+                        id: 'item-id'
+                    }
+                }
+            },{
+                id: 'notification-2',
+                title: 'Something happened',
+                category: 'follows',
+                time: '5m',
+                read: true,
+                type: 'likes',
+                url: 'http://url.com',
+                meta: {
+                    author: {
+                        username: 'JohnCena'
+                    }
+                }
+            },{
+                id: 'notification-3',
+                title: 'Something happened',
+                time: '5m',
+                read: false,
+                type: 'likes',
+                url: 'http://url.com'
+            },{
+                id: 'notification-4',
+                title: 'Something happened',
+                category: 'notification',
+                time: 'a day',
+                read: false,
+                type: 'shares',
+                url: 'http://url.com'
+            }];
+            bind.notifications2 = [{
+                id: 'notification-5',
+                title: 'Something happened',
+                category: 'notification',
+                time: '5m',
+                read: true,
+                type: 'shares',
+                url: 'http://url.com'
+            }];
+            document.addEventListener('login', () => notify('login'));
+            document.addEventListener('signup', () => notify('signup'));
+            document.addEventListener('logout', () => notify('logout'));
+            document.addEventListener('notifications-read-all', () => notify('notifications-read-all'));
+            document.addEventListener('notifications-read', (e) => notify('notifications-read: ' + e.detail.id));
+        </script>
+    </body>
+</html>

@@ -1,0 +1,680 @@
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../kano-user-badge/kano-user-badge.html">
+<link rel="import" href="../kano-drop-down/kano-drop-down.html">
+<link rel="import" href="./kano-drop-down-item.html">
+<link rel="import" href="./kano-notifications.html">
+<!--
+
+`kano-nav-bar` is the Kano Universe designed nav bar to provide navigation across all kano online products. It also displays user navigation and notifications
+
+Example:
+
+    <kano-nav-bar user="[[user1]]" xp="700" notifications="[[notifications1]]" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--kano-nav-bar-highlight-color` | Color of the bottom/left border of selected nav items | `#66bed3`
+`--kano-nav-bar` | Mixin applied to the nav bar | `{}`
+
+@group Kano Elements
+@hero hero.svg
+@demo demo/kano-nav-bar.html
+-->
+<dom-module id="kano-nav-bar">
+    <style>
+    @keyframes slideInLeft {
+        from {
+            transform: translate3d(-100%, 0, 0);
+            visibility: visible;
+        }
+
+        to {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+    :host {
+        display: block;
+        font-smoothing: antialiased;
+        @apply(--layout-vertical);
+        font-weight: 700;
+        --kano-nav-bar-highlight-color: #66bed3;
+    }
+    :host kano-drop-down {
+        --kano-drop-down: {
+            padding: 0px;
+            width: 220px;
+            overflow: hidden;
+        };
+    }
+    :host #notifications-drop-down {
+        right: -12.5px;
+        --kano-drop-down: {
+            width: 360px;
+            padding: 0px;
+            overflow: hidden;
+        };
+    }
+    :host #user-drop-down {
+        right: 5px;
+        --kano-drop-down: {
+            width: 200px;
+            padding: 0px;
+            overflow: hidden;
+        };
+    }
+    :host ul {
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+    }
+    :host .page-width {
+        position: relative;
+        max-width: 900px;
+        margin: auto;
+        padding: 0 20px;
+        height: 70px;
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+        @apply(--layout-justify);
+        @apply(--kano-nav-bar);
+    }
+    :host nav {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        background: #fff;
+        display: block;
+        box-shadow: 0 0 5px rgba(0,0,0,0.15);
+    }
+    :host .nav-menu {
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+    }
+    :host .nav-menu-items {
+        @apply(--layout-horizontal);
+    }
+    :host .menu-item {
+        position: relative;
+        @apply(--layout-horizontal);
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+    }
+    :host .item:focus>kano-drop-down-item {
+        background-color: #cecece;
+    }
+    :host .item:focus {
+        outline: none;
+    }
+    :host .link {
+        border: 0px;
+        border-bottom: 4px solid transparent;
+        @apply(--layout-center);
+        @apply(--layout-horizontal);
+        padding: 0 10px;
+        margin: 0 10px;
+    }
+    :host .menu-item.avatar>.link,
+    :host .menu-item.notifications>.link {
+        margin: 0px;
+    }
+    :host .menu-item>.link,
+    :host .item,
+    :host .auth-options button {
+        font-size: 19px;
+        font-weight: 700;
+        color: #414042;
+        cursor: pointer;
+    }
+    :host .auth-options {
+        @apply(--layout-horizontal);
+    }
+    :host .auth-options button {
+        border: 0px;
+        background-color: transparent;
+        padding: 0 10px;
+        padding-bottom: 4px;
+    }
+    :host .auth-options button:focus {
+        outline: none;
+        background-color: #eee;
+    }
+    :host .item {
+        font-size: 15px;
+    }
+    :host button.link {
+        background-color: transparent;
+    }
+    :host .link:focus {
+        outline: none;
+    }
+    :host kano-user-badge {
+        pointer-events: none;
+    }
+    :host kano-drop-down {
+        position: absolute;
+        top: 100%;
+        left: 0px;
+    }
+    :host .link:hover,
+    :host .link:focus {
+        border-bottom-color: var(--kano-nav-bar-highlight-color);
+    }
+    :host .menu-item.avatar>.link:hover,
+    :host .menu-item.avatar>.link:focus,
+    :host .menu-item.notifications>.link:hover,
+    :host .menu-item.notifications>.link:focus {
+        border-bottom-color: transparent;
+    }
+    :host .menu-item.avatar>.link:focus {
+        background-color: #eee;
+    }
+    :host .menu-item.notifications>.link:focus {
+        transform: scale(1.3);
+    }
+    :host .menu-item a {
+        @apply(--layout-flex);
+        text-align: center;
+    }
+    :host .link {
+        @apply(--layout-flex);
+    }
+    :host .separator {
+        height: 30px;
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 3px;
+        background-color: #eee;
+        align-self: center;
+    }
+    :host a {
+        text-decoration: none;
+    }
+    :host nav li.nav-menu-items__open .icon-chevron-down2:before {
+        content: '\e63e';
+    }
+    :host nav li .icon-chevron-down2 {
+        vertical-align: middle;
+        font-size: 15px;
+    }
+    .slideInLeft {
+        animation-name: slideInLeft;
+        animation-duration: 0.5s;
+        animation-fill-mode: both;
+    }
+    :host .hamburger {
+        border: 0px;
+        background-color: transparent;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        display: none;§
+        margin: 0px 20px;
+        cursor: pointer;
+    }
+    :host .hamburger:focus {
+        background-color: #eee;
+        outline: none;
+    }
+    :host .blue-border {
+        border-bottom-color: var(--kano-nav-bar-highlight-color);
+    }
+    :host .drop-down-content {
+        padding: 15px 0;
+        font-size: 15px;
+    }
+    :host .login-menu {
+        padding: 23px 5px 15px 5px;
+        display: inline-block;
+        margin: 0px 2px;
+        font-size: 19px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #414042;
+        vertical-align: middle;
+    }
+    :host #notifications-menu {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+    }
+    :host .user-info {
+        @apply(--layout-vertical);
+    }
+    :host .user-info .level {
+        color: #7f7f7f;
+    }
+    :host .logo {
+        @apply(--layout-horizontal);
+    }
+    :host .logo .link {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+    }
+    :host .logo img {
+        width: 100px;
+        height: 40px;
+    }
+    :host .left,
+    :host .right,
+    :host .center {
+        @apply(--layout-horizontal);
+    }
+    :host .right,
+    :host .center {
+        @apply(--layout-flex);
+    }
+    :host .right {
+        @apply(--layout-end-justified);
+    }
+    :host button.item {
+        border: 0px;
+        width: 100%;
+        background-color: transparent;
+        padding: 0px;
+    }
+    @media screen and (max-width: 768px) {
+        :host .page-width {
+            height: auto;
+            padding: 0px;
+            padding-top: 70px;
+        }
+        :host .hamburger {
+            display: flex;
+        }
+        :host .center {
+            @apply(--layout-vertical);
+        }
+        :host .right,
+        :host .left {
+            position: absolute;
+            top: 0px;
+            height: 70px;
+        }
+        :host .right {
+            right: 0px;
+        }
+        :host .left {
+            left: 0px;
+        }
+        :host #nav-items {
+            @apply(--layout-vertical);
+            @apply(--layout-start);
+        }
+        :host .separator {
+            @apply(--layout-self-stretch);
+            height: 3px;
+            width: auto;
+            margin: 20px 39px;
+        }
+        :host .center li.menu-item {
+            @apply(--layout-wrap);
+            @apply(--layout-self-stretch);
+            width: auto;
+            box-sizing: border-box;
+        }
+        :host .link:hover,
+        :host .link:focus {
+            border-bottom: 0px;
+            border-left-color: var(--kano-nav-bar-highlight-color);
+        }
+        :host .left .link:hover,
+        :host .left .link:focus,
+        :host .right .link:hover,
+        :host .right .link:focus {
+            background-color: #eee;
+            border-left-color: transparent;
+        }
+        :host .link {
+            @apply(--layout-flex);
+            text-align: left;
+            padding: 15px 5px 15px 35px;
+            border-bottom: 0px;
+            border-left: 4px solid transparent;
+            margin: 0px;
+        }
+        :host #make-drop-down kano-drop-down-item {
+            padding-left: 20px;
+        }
+        :host #community-drop-down kano-drop-down-item {
+            padding-left: 35px;
+        }
+        :host .logo .link {
+            padding: 0 10px;
+        }
+        :host #notifications-button,
+        :host #user-button {
+            padding: 0 10px;
+        }
+        :host #notifications-button:hover,
+        :host #user-button:hover,
+        :host .logo .link:hover {
+            border-left-color: transparent;
+        }
+        :host .drop-down-content {
+            background-color: #eee;
+        }
+    }
+    :host([is-mobile]) .center kano-drop-down {
+        position: relative;
+        width: 100%;
+        --kano-drop-down: {
+            width: 100%;
+            box-shadow: none;
+            position: relative;
+        };
+    }
+    :host([is-mobile]) .right kano-drop-down#notifications-drop-down {
+        position: fixed;
+        top: 70px;
+        right: 4px;
+    }
+    :host([is-mobile]) .right kano-drop-down#user-drop-down {
+        position: fixed;
+        top: 70px;
+        right: 4px;
+    }
+    :host([is-mobile]) ::content .right kano-drop-down#notifications-drop-down #caret {
+        right: 90px;
+    }
+    /* FIXME Limitation of the current CSS scoping polyfill forces us to do that */
+    :host([is-mobile]) ::content .center kano-drop-down .drop-down {
+        width: 100%;
+        box-shadow: none;
+        position: relative;
+        padding: 0px;
+    }
+    /* FIXME This css rule is missing in the component, remove when component updated */
+    :host ::content kano-user-badge .user-avatar {
+        left: 0px;
+    }
+    :host .unread-count {
+        position: absolute;
+        display: inline-block;
+        border: 2px solid #fff;
+        line-height: 16px;
+        text-align: center;
+        background-color: #EE5F53;
+        color: #fff;
+        top: 25px;
+        right: 0px;
+        margin-left: 5px;
+        margin-top: -16px;
+        font-weight: bold;
+        font-size: 0.7em;
+        padding: 0 3px;
+        min-width: 10px;
+        border-radius: 5px;
+        pointer-events: none;
+    }
+    </style>
+    <template>
+        <iron-media-query query="(max-width: 768px)" query-matches="{{isMobile}}"></iron-media-query>
+        <nav id="navbar">
+            <div class="page-width">
+                <div class="left">
+                    <button class="hamburger slideInLeft" on-tap="toggleMenu">
+                        <img src$="[[assetsPath]]hamburger.svg" />
+                    </button>
+                    <div class="logo">
+                        <a href="/" class="link">
+                            <img src$="[[assetsPath]]kano.svg" alt="" />
+                        </a>
+                    </div>
+                </div>
+                <div class="center">
+                    <ul id="nav-items" class="nav-menu-items" hidden$="[[!_isMenuOpened(isMobile, menuOpened)]]">
+                        <li class="menu-item make-items make-nav">
+                            <button class="link" id="make-button" on-tap="_toggleOpen">
+                                <span>Make</span>
+                                <i class="icon-chevron-down2"></i>
+                            </button>
+                            <kano-drop-down id="make-drop-down">
+                                <ul class="drop-down-content">
+                                    <template is="dom-repeat" items="[[makeItems]]">
+                                        <li>
+                                            <a href$="[[item.url]]" target="_blank" class="item">
+                                                <kano-drop-down-item icon="[[item.icon]]">[[item.name]]</kano-drop-down-item>
+                                            </a>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </kano-drop-down>
+                        </li>
+                        <li class="menu-item">
+                            <a href$="[[worldRoot]]/projects" class="link">Projects</a>
+                        </li>
+                        <li class="menu-item community-nav">
+                            <button class="link" id="community-button" on-tap="_toggleOpen">
+                                <span>Community</span>
+                                <i class="icon-chevron-down2"></i>
+                            </button>
+                            <kano-drop-down id="community-drop-down">
+                                <ul class="drop-down-content">
+                                    <template is="dom-repeat" items="[[communityItems]]">
+                                        <li>
+                                            <a href$="[[item.url]]" target="_blank" class="item">
+                                                <kano-drop-down-item>[[item.name]]</kano-drop-down-item>
+                                            </a>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </kano-drop-down>
+                        </li>
+                        <li class="separator"></li>
+                        <li class="menu-item">
+                            <a href="http://www.kano.me" class="link">Products</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="right">
+                    <ul class="nav-menu-user-items nav-menu-items" hidden$="[[!_isAuthenticated(user)]]">
+                        <li id="notifications-menu" class="menu-item notifications">
+                            <button class="link" id="notifications-button" on-tap="_toggleOpen">
+                                <img src$="[[assetsPath]]notification.svg" class="notifications-icon" alt="notifications-icon" />
+                            </button>
+                            <div class="unread-count" hidden$="[[!unread]]">[[unread]]</div>
+                            <kano-drop-down id="notifications-drop-down" caret-align="right">
+                                <kano-notifications notifications="{{notifications}}" on-read="_onRead" on-read-all="_onReadAll" unread-count="{{unread}}" world-root="[[worldRoot]]"></kano-notifications>
+                            </kano-drop-down>
+                        </li>
+                        <li id="avatar-menu" class="menu-item avatar">
+                            <button class="link" id="user-button" on-tap="_toggleOpen">
+                                <kano-user-badge user="[[user]]" xp="[[xp]]" level="{{level}}"></kano-user-badge>
+                            </button>
+                            <kano-drop-down id="user-drop-down" caret-align="right">
+                                <ul>
+                                    <a href$="[[worldRoot]]/user/[[user.username]]" class="item">
+                                        <kano-drop-down-item>
+                                            <div class="user-info">
+                                                <span class="username">[[user.username]]</span>
+                                                <span class="level">Level [[level]]</span>
+                                            </div>
+                                        </kano-drop-down-item>
+                                    </a>
+                                    <a href$="[[worldRoot]]/accounts/settings" class="item">
+                                        <kano-drop-down-item>Settings</kano-drop-down-item>
+                                    </a>
+                                    <a href$="[[worldRoot]]/admin" class="item" hidden$="[[!_isUserAdmin(user)]]">
+                                        <kano-drop-down-item>Admin</kano-drop-down-item>
+                                    </a>
+                                    <button class="item" on-tap="_onLogout">
+                                        <kano-drop-down-item>Log out</kano-drop-down-item>
+                                    </button>
+                                </ul>
+                            </kano-drop-down>
+                        </li>
+                    </ul>
+                    <ul class="auth-options" hidden$="[[_isAuthenticated(user)]]">
+                        <li class="menu-item">
+                            <button on-tap="_login">Log in</button>
+                        </li>
+                        <li class="menu-item">
+                            <button on-tap="_signup">Sign up</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </template>
+</dom-module>
+<script>
+    Polymer({
+        is: 'kano-nav-bar',
+        properties: {
+            /**
+             * User object containing the information about the authenticated user
+             */
+            user: {
+                type: Object,
+                value: null
+            },
+            /**
+             * Amount of experience earned by the authenticated user
+             */
+            xp: {
+                type: Number
+            },
+            /**
+             * A list of notifications received by the authenticated user
+             */
+            notifications: {
+                type: Array,
+                notify: true
+            },
+            /**
+             * Path to the assets required by this components
+             */
+            assetsPath: {
+                type: String,
+                value: '/'
+            },
+            /**
+             * Is the nav-bar being displayed on a mobile device
+             */
+            isMobile: {
+                type: Boolean,
+                value: false,
+                notify: true,
+                reflectToAttribute: true
+            },
+            /**
+             * Base path of Kano World. You can use this to test redirections to staging/dev environments
+             */
+            worldRoot: {
+                type: String,
+                value: 'https://world.kano.me'
+            },
+            /**
+             * Is the left menu opened
+             */
+            menuOpened: {
+                type: Boolean,
+                value: false,
+                notify: true
+            }
+        },
+        attached () {
+            this.listen(document, 'tap', '_onDocumentTap');
+        },
+        detached () {
+            this.unlisten(document, 'tap', '_onDocumentTap');
+        },
+        ready () {
+            this.communityItems = [{
+                name: 'Users',
+                url: this.worldRoot + '/users'
+            },{
+                name: "Creations",
+                url: this.worldRoot + '/shares'
+            },{
+                name: "Leaderboard",
+                url: this.worldRoot + '/leaderboards'
+            },{
+                name: "Forum",
+                url: this.worldRoot + '/forum'
+            },{
+                name: "Blog",
+                url: 'http://blog.kano.me'
+            },{
+                name: "Help Center",
+                url: '//help.kano.me'
+            }];
+            this.makeItems = [{
+                name: 'Make Apps',
+                url: '//apps.kano.me',
+                icon: 'assets/navbar/make-apps.svg'
+            },{
+                name: 'Make Art',
+                url: '//art.kano.me',
+                icon: 'assets/navbar/make-art.svg'
+            },{
+                name: 'Make Adventures',
+                url: 'http://adventures.kano.me',
+                icon: 'assets/navbar/make-adventures.svg'
+            },{
+                name: 'Kano OS Apps',
+                url: '//world.kano.me/apps',
+                icon: 'assets/navbar/osapps.svg'
+            }];
+            if (window.location.pathname === '/') {
+                this.toggleClass('selected', true, this.$['logo']);
+            }
+        },
+        /**
+         * Toggles the left menu on mobile device mode
+         */
+        toggleMenu () {
+            this.menuOpened = !this.menuOpened;
+        },
+        _isAuthenticated (user) {
+            return !!user;
+        },
+        _onDocumentTap (e) {
+            let dropDowns = this.querySelectorAll('kano-drop-down');
+            for (let i = 0; i < dropDowns.length; i++) {
+                dropDowns[i].close();
+            }
+        },
+        _login () {
+            this.fire('login');
+        },
+        _onLogout () {
+            this.fire('logout');
+        },
+        _signup () {
+            this.fire('signup');
+        },
+        _isMenuOpened (isMobile, menuOpened) {
+            return isMobile && menuOpened || !isMobile;
+        },
+        _toggleOpen (e) {
+            let target = e.target,
+                triggerId = target.getAttribute('id'),
+                dropDowns = this.querySelectorAll('kano-drop-down'),
+                targetDDId,
+                dropDown;
+
+            e.stopPropagation();
+
+            if (!triggerId) {
+                target = target.parentNode;
+                triggerId = target.getAttribute('id')
+            }
+            targetDDId = triggerId.replace('-button', '-drop-down');
+            dropDown = this.$[targetDDId];
+
+            for (let i = 0; i < dropDowns.length; i++) {
+                if (dropDowns[i] !== dropDown) {
+                    dropDowns[i].close();
+                }
+            }
+
+            if (dropDown) {
+                dropDown.toggle();
+            }
+        },
+        _isUserAdmin (user) {
+            return user && user.admin_level > 0;
+        }
+    });
+</script>

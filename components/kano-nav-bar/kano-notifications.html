@@ -1,0 +1,156 @@
+<link rel="import" href="../iron-pages/iron-pages.html">
+<dom-module id="kano-notifications">
+    <style>
+    :host {
+        display: block;
+        color: var(--kano-notifications-read-color, #333);
+    }
+    :host .notification-line {
+        @apply(--layout-horizontal);
+    }
+    :host .notification-line.unread {
+        color: var(--kano-notifications-unread-color, #414042);
+    }
+    :host a:focus,
+    :host button:focus {
+        outline: none;
+        background-color: #cecece;
+    }
+    :host a {
+        text-decoration: none;
+    }
+    :host button {
+        background-color: transparent;
+        border: 0px;
+        cursor: pointer;
+    }
+    :host .notification {
+        color: #7F7F7F;
+        font-size: 13px;
+        display: block;
+    }
+    :host .options {
+        @apply(--layout-horizontal);
+    }
+    :host .title {
+        @apply(--layout-flex);
+    }
+    :host .time,
+    :host .notification-icon {
+        width: 34px;
+        margin-right: 3px;
+    }
+    :host .option {
+        padding: 0px 10px;
+        height: 57px;
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+        @apply(--layout-center);
+    }
+    :host .option:hover {
+        background-color: #cecece;
+    }
+    :host .icon {
+        visibility: hidden;
+    }
+    :host .option:hover .icon,
+    :host .notification:hover .icon {
+        visibility: visible;
+    }
+    :host .empty {
+        padding: 25px 0;
+        text-align: center;
+    }
+    </style>
+    <template>
+        <template is="dom-repeat" items="[[notifications]]" as="notification">
+            <a href$="[[_computeNotificationUrl(notification)]]" target="_blank" class="notification" on-tap="_onNotificationTap">
+                <kano-drop-down-item>
+                    <div class$="notification-line [[_computeReadClass(notification.read)]]">
+                        <span class="time">[[notification.time]]</span>
+                        <iron-pages selected="[[notification.type]]" attr-for-selected="name" class="notification-icon">
+                            <i class="icon-share" name="shares"></i>
+                            <i class="icon-heart" name="likes"></i>
+                            <i class="icon-megaphone" name="updates"></i>
+                            <i class="icon-users" name="follows"></i>
+                            <i class="icon-chat" name="comments"></i>
+                        </iron-pages>
+                        <span class="title">[[notification.title]]</span>
+                        <i class="notification-icon icon-chevron-right2 icon" hidden$="[[!notification.category]]"></i>
+                    </div>
+                </kano-drop-down-item>
+            </a>
+        </template>
+        <div class="empty" hidden$="[[_hasNotifications(notifications.*)]]">You have no notifications yet.</div>
+        <div class="options" hidden$="[[!_hasNotifications(notifications.*)]]">
+            <a href$="[[worldRoot]]/notifications" class="option">
+                <span>See all</span>
+                <i class="icon icon-chevron-right2"></i>
+            </a>
+            <button on-tap="_readAll" hidden$="[[!unreadCount]]" class="option">
+                <span>Mark all as read</span>
+                <i class="icon icon-tick"></i>
+            </button>
+        </div>
+    </template>
+</dom-module>
+<script type="text/javascript">
+    Polymer({
+        is: 'kano-notifications',
+        properties: {
+            notifications: {
+                type: Array,
+                value: () => {
+                    return [];
+                },
+                notify: true
+            },
+            unreadCount: {
+                type: Number,
+                computed: '_computeUnreadCount(notifications.*)',
+                readOnly: true,
+                notify: true
+            }
+        },
+        _readAll () {
+            this.fire('notifications-read-all');
+            this.notifications.forEach((notification, index) => {
+                this.set(`notifications.${index}.read`, true);
+            });
+        },
+        _hasNotifications () {
+            return !!this.notifications.length;
+        },
+        _computeUnreadCount () {
+            return this._computeUnread().length;
+        },
+        _computeUnread () {
+            return this.notifications.filter(notification => !notification.read)
+        },
+        _computeReadClass (read) {
+            return read ? 'read' : 'unread';
+        },
+        _onNotificationTap (e) {
+            let notification = e.model.get('notification'),
+                index = e.model.get('index');
+            this.fire('notifications-read', notification);
+            this.set(`notifications.${index}.read`, true);
+        },
+        _computeNotificationUrl (notification) {
+            let path;
+            notification.meta = notification.meta || {};
+            if (notification.category === 'follows') {
+                notification.meta.author = notification.meta.author || {};
+                path = `/users/${notification.meta.author.username}`;
+            } else {
+                notification.meta.item = notification.meta.item || {};
+                path = `/shared/${notification.meta.item.id}`;
+            }
+            return `${this.worldRoot}${path}`;
+        }
+    });
+</script>
