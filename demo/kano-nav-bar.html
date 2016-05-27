@@ -31,9 +31,9 @@
     </head>
     <body>
         <template is="dom-bind" id="bind">
-            <kano-nav-bar user="[[user1]]" xp="700" notifications="[[notifications1]]" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
-            <kano-nav-bar user="[[user2]]" xp="100" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
-            <kano-nav-bar xp="1200" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
+            <kano-nav-bar user="[[user1]]" xp="700" notifications="[[notifications1]]" assets-path="./assets/navbar/" world-root="https://world.kano.me" default-avatar="http://a.deviantart.net/avatars/m/a/marcelineplz.jpg?3"></kano-nav-bar>
+            <kano-nav-bar user="[[user2]]" xp="100" assets-path="./assets/navbar/" world-root="https://world.kano.me" default-avatar="http://a.deviantart.net/avatars/m/a/marcelineplz.jpg?3"></kano-nav-bar>
+            <kano-nav-bar xp="1200" assets-path="./assets/navbar/" world-root="https://world.kano.me" default-avatar="http://a.deviantart.net/avatars/m/a/marcelineplz.jpg?3"></kano-nav-bar>
             <paper-toast id="toast"></paper-toast>
         </template>
         <script type="text/javascript">
@@ -53,9 +53,7 @@
             };
             bind.user2 = {
                 avatar: {
-                    urls: {
-                        circle: 'http://johncena.xyz/assets/button.png'
-                    }
+                    urls: {}
                 },
                 username: 'JohnCena'
             };

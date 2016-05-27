@@ -479,7 +479,7 @@ Custom property | Description | Default
                         </li>
                         <li id="avatar-menu" class="menu-item avatar">
                             <button class="link" id="user-button" on-tap="_toggleOpen">
-                                <kano-user-badge user="[[user]]" xp="[[xp]]" level="{{level}}"></kano-user-badge>
+                                <kano-user-badge user="[[user]]" xp="[[xp]]" level="{{level}}" default-avatar="{{defaultAvatar}}"></kano-user-badge>
                             </button>
                             <kano-drop-down id="user-drop-down" caret-align="right">
                                 <ul>
@@ -571,6 +571,12 @@ Custom property | Description | Default
                 type: Boolean,
                 value: false,
                 notify: true
+            },
+            /**
+             * Default avatar for the user badge
+             */
+            defaultAvatar: {
+                type: String
             }
         },
         attached () {
