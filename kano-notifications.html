@@ -1,4 +1,5 @@
 <link rel="import" href="../iron-pages/iron-pages.html">
+<script src="../time-elements/time-elements.js"></script>
 <dom-module id="kano-notifications">
     <style>
     :host {
@@ -71,7 +72,9 @@
             <a href$="[[_computeNotificationUrl(notification)]]" target="_blank" class="notification" on-tap="_onNotificationTap">
                 <kano-drop-down-item>
                     <div class$="notification-line [[_computeReadClass(notification.read)]]">
-                        <span class="time">[[notification.time]]</span>
+                        <span class="time">
+                            <time-ago datetime$="[[notification.time]]" format="micro"></time-ago>
+                        </span>
                         <iron-pages selected="[[notification.type]]" attr-for-selected="name" class="notification-icon">
                             <i class="icon-share" name="shares"></i>
                             <i class="icon-heart" name="likes"></i>
