@@ -452,7 +452,7 @@ Custom property | Description | Default
                                 <ul class="drop-down-content">
                                     <template is="dom-repeat" items="[[communityItems]]">
                                         <li>
-                                            <a href$="[[item.url]]" target="_blank" class="item">
+                                            <a href$="[[item.url]]" target$="[[item.target]]" class="item">
                                                 <kano-drop-down-item>[[item.name]]</kano-drop-down-item>
                                             </a>
                                         </li>
@@ -588,22 +588,28 @@ Custom property | Description | Default
         ready () {
             this.communityItems = [{
                 name: 'Users',
-                url: this.worldRoot + '/users'
+                url: this.worldRoot + '/users',
+                target: '_self'
             },{
                 name: "Creations",
-                url: this.worldRoot + '/shares'
+                url: this.worldRoot + '/shares',
+                target: '_self'
             },{
                 name: "Leaderboard",
-                url: this.worldRoot + '/leaderboards'
+                url: this.worldRoot + '/leaderboards',
+                target: '_self'
             },{
                 name: "Forum",
-                url: this.worldRoot + '/forum'
+                url: this.worldRoot + '/forum',
+                target: '_self'
             },{
                 name: "Blog",
-                url: 'http://blog.kano.me'
+                url: 'http://blog.kano.me',
+                target: '_blank'
             },{
                 name: "Help Center",
-                url: '//help.kano.me'
+                url: '//help.kano.me',
+                target: '_blank'
             }];
             this.makeItems = [{
                 name: 'Make Apps',
