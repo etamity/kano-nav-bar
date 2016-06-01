@@ -6,11 +6,16 @@
 <link rel="import" href="./kano-notifications.html">
 <!--
 
-`kano-nav-bar` is the Kano Universe designed nav bar to provide navigation across all kano online products. It also displays user navigation and notifications
+`kano-nav-bar` is the Kano Universe designed nav bar to provide navigation
+across all kano online products. It also displays user navigation and notifications
 
 Example:
 
-    <kano-nav-bar user="[[user1]]" xp="700" notifications="[[notifications1]]" assets-path="./assets/navbar/" world-root="https://world.kano.me"></kano-nav-bar>
+    <kano-nav-bar user="[[user1]]"
+                  xp="700"
+                  notifications="[[notifications1]]"
+                  assets-path="./assets/navbar/"
+                  world-root="https://world.kano.me"></kano-nav-bar>
 
 Custom property | Description | Default
 ----------------|-------------|----------
@@ -99,6 +104,9 @@ Custom property | Description | Default
         @apply(--layout-horizontal);
         -webkit-tap-highlight-color: transparent;
         cursor: pointer;
+    }
+    :host .menu-item button {
+        white-space: nowrap;
     }
     :host .item:focus>kano-drop-down-item {
         background-color: #cecece;
