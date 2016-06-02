@@ -148,8 +148,10 @@
             notification.meta = notification.meta || {};
 
             if (notification.category === 'follows') {
+                notification.meta.author = notification.meta.author || {};
                 path = `/users/${notification.meta.author.username}`;
             } else if (notification.category === 'shares' || notification.category === 'share-items') {
+                notification.meta.item = notification.meta.item || {};
                 path = `/shared/${notification.meta.item.id}`;
             } else if (notification.category === 'comments') {
                 path = this._getItemLink(notification.meta.item);
