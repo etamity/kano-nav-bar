@@ -146,14 +146,56 @@
         _computeNotificationUrl (notification) {
             let path;
             notification.meta = notification.meta || {};
+
             if (notification.category === 'follows') {
-                notification.meta.author = notification.meta.author || {};
                 path = `/users/${notification.meta.author.username}`;
-            } else {
-                notification.meta.item = notification.meta.item || {};
+            } else if (notification.category === 'shares' || notification.category === 'share-items') {
                 path = `/shared/${notification.meta.item.id}`;
+            } else if (notification.category === 'comments') {
+                path = this._getItemLink(notification.meta.item);
+            } else if (notification.category === 'updates') {
+                path = this._getUpdateLink(notification);
+            } else if (notification.category === 'badges') {
+                path = `/users/${app.context.user.username}/badges`;
+            } else if (notification.category === 'likes') {
+                if (notification.type === 'shareItem') {
+                  path = `/shared/${notification.meta.item.id}`;
+                } else if (notification.type === 'project') {
+                path = `/projects/${notification.meta.item.id}`;
+            } else {
+                path = this._getItemLink(notification.meta.item);
+              }
             }
             return `${this.worldRoot}${path}`;
+        }
+
+        _getItemLink (item) {
+            let link;
+
+            if (item.type === 'share') {
+                link = `/shared/${item.id}`;
+            } else if (item.type === 'project') {
+                link = `/projects/${item.id}`;
+            } else if (item.type === 'app') {
+                link = `/apps/${item.slug}`;
+            } else if (item.type === 'forum-post') {
+                link = `/forum/topic/${item.slug}`;
+            }
+
+            return link;
+        }
+
+        _getUpdateLink (notification) {
+            let link;
+            if (notification.category === 'updates') {
+                if (notification.meta.url) {
+                    link = notification.meta.url;
+                } else if (notification.meta.project) {
+                    link = `/projects/${notification.meta.project.id}`;
+                }
+            }
+
+            return link;
         }
     });
 </script>
