@@ -117,6 +117,9 @@
                 computed: '_computeUnreadCount(notifications.*)',
                 readOnly: true,
                 notify: true
+            },
+            username: {
+              type: String
             }
         },
         _readAll () {
@@ -144,21 +147,21 @@
             this.set(`notifications.${index}.read`, true);
         },
         _computeNotificationUrl (notification) {
-            let path;
+            let path = '/notifications';
             notification.meta = notification.meta || {};
+            notification.meta.item = notification.meta.item || {};
 
             if (notification.category === 'follows') {
                 notification.meta.author = notification.meta.author || {};
                 path = `/users/${notification.meta.author.username}`;
             } else if (notification.category === 'shares' || notification.category === 'share-items') {
-                notification.meta.item = notification.meta.item || {};
                 path = `/shared/${notification.meta.item.id}`;
             } else if (notification.category === 'comments') {
                 path = this._getItemLink(notification.meta.item);
             } else if (notification.category === 'updates') {
                 path = this._getUpdateLink(notification);
             } else if (notification.category === 'badges') {
-                path = `/users/${user.username}/badges`;
+                path = `/users/${this.username}/badges`;
             } else if (notification.category === 'likes') {
                 if (notification.type === 'shareItem') {
                   path = `/shared/${notification.meta.item.id}`;
@@ -169,10 +172,10 @@
               }
             }
             return `${this.worldRoot}${path}`;
-        }
+        },
 
         _getItemLink (item) {
-            let link;
+            let link = '/notifications';
 
             if (item.type === 'share') {
                 link = `/shared/${item.id}`;
@@ -185,10 +188,11 @@
             }
 
             return link;
-        }
+        },
 
         _getUpdateLink (notification) {
-            let link;
+            let link = '/notifications';
+
             if (notification.category === 'updates') {
                 if (notification.meta.url) {
                     link = notification.meta.url;
