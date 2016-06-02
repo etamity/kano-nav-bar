@@ -156,7 +156,7 @@
             } else if (notification.category === 'updates') {
                 path = this._getUpdateLink(notification);
             } else if (notification.category === 'badges') {
-                path = `/users/${app.context.user.username}/badges`;
+                path = `/users/${user.username}/badges`;
             } else if (notification.category === 'likes') {
                 if (notification.type === 'shareItem') {
                   path = `/shared/${notification.meta.item.id}`;
