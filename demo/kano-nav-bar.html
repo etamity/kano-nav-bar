@@ -3,7 +3,11 @@
     <head>
         <meta charset="utf-8">
         <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-        <link rel="stylesheet" href="./css/icons.css" media="screen" title="no title" charset="utf-8">
+        <script type="text/javascript">
+            window.Polymer = {
+                dom: 'shadow'
+            };
+        </script>
         <link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
         <link rel="import" href="../../paper-toast/paper-toast.html">
         <link rel="import" href="../kano-nav-bar.html">
@@ -60,10 +64,10 @@
             bind.notifications1 = [{
                 id: 'notification-1',
                 title: 'Something happened',
-                category: 'notification',
                 time: new Date(),
                 read: false,
                 type: 'shares',
+                category: 'shares',
                 url: 'http://url.com',
                 meta: {
                     item: {
@@ -73,7 +77,7 @@
             },{
                 id: 'notification-2',
                 title: 'Something happened',
-                category: 'follows',
+                category: 'likes',
                 time: new Date(),
                 read: true,
                 type: 'likes',
@@ -88,21 +92,30 @@
                 title: 'Something happened',
                 time: new Date(),
                 read: false,
-                type: 'likes',
+                type: 'updates',
+                category: 'updates',
                 url: 'http://url.com'
             },{
                 id: 'notification-4',
                 title: 'Something happened',
-                category: 'notification',
+                category: 'follows',
                 time: new Date(),
                 read: false,
+                type: 'shares',
+                url: 'http://url.com'
+            },{
+                id: 'notification-4',
+                title: 'Something happened',
+                category: 'comments',
+                time: new Date(),
+                read: true,
                 type: 'shares',
                 url: 'http://url.com'
             }];
             bind.notifications2 = [{
                 id: 'notification-5',
                 title: 'Something happened',
-                category: 'notification',
+                category: 'comments',
                 time: new Date(),
                 read: true,
                 type: 'shares',

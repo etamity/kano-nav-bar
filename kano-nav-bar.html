@@ -1,7 +1,9 @@
 <link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../kano-user-badge/kano-user-badge.html">
 <link rel="import" href="../kano-drop-down/kano-drop-down.html">
+<link rel="import" href="./kano-nav-bar-icons.html">
 <link rel="import" href="./kano-drop-down-item.html">
 <link rel="import" href="./kano-notifications.html">
 <!--
@@ -45,14 +47,21 @@ Custom property | Description | Default
         font-weight: 700;
         --kano-nav-bar-highlight-color: #66bed3;
     }
-    :host kano-drop-down {
+    *[hidden] {
+        display: none !important;
+    }
+    iron-icon {
+        --iron-icon-width: 16px;
+        --iron-icon-height: 16px;
+    }
+    kano-drop-down {
         --kano-drop-down: {
             padding: 0px;
             width: 220px;
             overflow: hidden;
         };
     }
-    :host #notifications-drop-down {
+    #notifications-drop-down {
         right: -12.5px;
         --kano-drop-down: {
             width: 360px;
@@ -60,7 +69,7 @@ Custom property | Description | Default
             overflow: hidden;
         };
     }
-    :host #user-drop-down {
+    #user-drop-down {
         right: 5px;
         --kano-drop-down: {
             width: 200px;
@@ -156,8 +165,9 @@ Custom property | Description | Default
     :host .link:focus {
         outline: none;
     }
-    :host kano-user-badge {
+    kano-user-badge {
         pointer-events: none;
+        --kano-user-badge-progress-color: #ff842a;
     }
     :host kano-drop-down {
         position: absolute;
@@ -197,13 +207,6 @@ Custom property | Description | Default
     }
     :host a {
         text-decoration: none;
-    }
-    :host nav li.nav-menu-items__open .icon-chevron-down2:before {
-        content: '\e63e';
-    }
-    :host nav li .icon-chevron-down2 {
-        vertical-align: middle;
-        font-size: 15px;
     }
     .slideInLeft {
         animation-name: slideInLeft;
@@ -391,10 +394,6 @@ Custom property | Description | Default
         position: relative;
         padding: 0px;
     }
-    /* FIXME This css rule is missing in the component, remove when component updated */
-    :host ::content kano-user-badge .user-avatar {
-        left: 0px;
-    }
     :host .unread-count {
         position: absolute;
         display: inline-block;
@@ -434,7 +433,7 @@ Custom property | Description | Default
                         <li class="menu-item make-items make-nav">
                             <button class="link" id="make-button" on-tap="_toggleOpen">
                                 <span>Make</span>
-                                <i class="icon-chevron-down2"></i>
+                                <iron-icon icon="navbar-icons:chevron-down"></iron-icon>
                             </button>
                             <kano-drop-down id="make-drop-down">
                                 <ul class="drop-down-content">
@@ -454,7 +453,7 @@ Custom property | Description | Default
                         <li class="menu-item community-nav">
                             <button class="link" id="community-button" on-tap="_toggleOpen">
                                 <span>Community</span>
-                                <i class="icon-chevron-down2"></i>
+                                <iron-icon icon="navbar-icons:chevron-down"></iron-icon>
                             </button>
                             <kano-drop-down id="community-drop-down">
                                 <ul class="drop-down-content">
@@ -650,7 +649,7 @@ Custom property | Description | Default
             return !!user;
         },
         _onDocumentTap (e) {
-            let dropDowns = this.querySelectorAll('kano-drop-down');
+            let dropDowns = Polymer.dom(this.root).querySelectorAll('kano-drop-down');
             for (let i = 0; i < dropDowns.length; i++) {
                 dropDowns[i].close();
             }
@@ -668,9 +667,9 @@ Custom property | Description | Default
             return isMobile && menuOpened || !isMobile;
         },
         _toggleOpen (e) {
-            let target = e.target,
+            let target = e.path ? e.path[0] : e.target,
                 triggerId = target.getAttribute('id'),
-                dropDowns = this.querySelectorAll('kano-drop-down'),
+                dropDowns = Polymer.dom(this.root).querySelectorAll('kano-drop-down'),
                 targetDDId,
                 dropDown;
 
