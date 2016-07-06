@@ -100,16 +100,18 @@
                 title: 'Something happened',
                 category: 'follows',
                 time: new Date(),
-                read: false,
+                read: true,
                 type: 'shares',
                 url: 'http://url.com'
             },{
-                id: 'notification-4',
-                title: 'Something happened',
+                id: 'notification-5',
+                title: 'A forum post happened.',
                 category: 'comments',
                 time: new Date(),
-                read: true,
-                type: 'shares',
+                read: false,
+                item: {
+                  type: 'forum-post',
+                },
                 url: 'http://url.com'
             }];
             bind.notifications2 = [{
