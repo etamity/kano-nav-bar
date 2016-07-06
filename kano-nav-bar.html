@@ -46,6 +46,11 @@ Custom property | Description | Default
         @apply(--layout-vertical);
         font-weight: 700;
         --kano-nav-bar-highlight-color: #66bed3;
+        font-family: var(--kano-nav-bar-font-family);
+    }
+    /* Buttons will keep their font family unless you target them directly */
+    button {
+        font-family: var(--kano-nav-bar-font-family);
     }
     *[hidden] {
         display: none !important;
@@ -82,7 +87,7 @@ Custom property | Description | Default
         margin: 0px;
         padding: 0px;
     }
-    :host .page-width {
+    .page-width {
         position: relative;
         max-width: 900px;
         margin: auto;
