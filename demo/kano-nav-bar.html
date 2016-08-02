@@ -46,7 +46,7 @@
         </template>
         <script type="text/javascript">
             function notify (message) {
-                let toast = document.getElementById('toast');
+                var toast = document.getElementById('toast');
                 toast.show(message);
             }
             var bind = document.getElementById('bind');
@@ -127,11 +127,11 @@
                 type: 'shares',
                 url: 'http://url.com'
             }];
-            document.addEventListener('login', () => notify('login'));
-            document.addEventListener('signup', () => notify('signup'));
-            document.addEventListener('logout', () => notify('logout'));
-            document.addEventListener('notifications-read-all', () => notify('notifications-read-all'));
-            document.addEventListener('notifications-read', (e) => notify('notifications-read: ' + e.detail.id));
+            document.addEventListener('login', function () { notify('login'); });
+            document.addEventListener('signup', function () { notify('signup'); });
+            document.addEventListener('logout', function () { notify('logout'); });
+            document.addEventListener('notifications-read-all', function () { notify('notifications-read-all'); });
+            document.addEventListener('notifications-read', function (e) { notify('notifications-read: ' + e.detail.id); });
         </script>
     </body>
 </html>

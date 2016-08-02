@@ -664,8 +664,8 @@ Custom property | Description | Default
             return !!user;
         },
         _onDocumentTap (e) {
-            let dropDowns = Polymer.dom(this.root).querySelectorAll('kano-drop-down');
-            for (let i = 0; i < dropDowns.length; i++) {
+            var dropDowns = Polymer.dom(this.root).querySelectorAll('kano-drop-down');
+            for (var i = 0; i < dropDowns.length; i++) {
                 dropDowns[i].close();
             }
         },
@@ -682,7 +682,7 @@ Custom property | Description | Default
             return isMobile && menuOpened || !isMobile;
         },
         _toggleOpen (e) {
-            let target = e.path ? e.path[0] : e.target,
+            var target = e.path ? e.path[0] : e.target,
                 triggerId = target.getAttribute('id'),
                 dropDowns = Polymer.dom(this.root).querySelectorAll('kano-drop-down'),
                 targetDDId,
@@ -697,7 +697,7 @@ Custom property | Description | Default
             targetDDId = triggerId.replace('-button', '-drop-down');
             dropDown = this.$[targetDDId];
 
-            for (let i = 0; i < dropDowns.length; i++) {
+            for (var i = 0; i < dropDowns.length; i++) {
                 if (dropDowns[i] !== dropDown) {
                     dropDowns[i].close();
                 }
