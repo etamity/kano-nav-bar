@@ -119,7 +119,7 @@
         properties: {
             notifications: {
                 type: Array,
-                value: () => {
+                value: function () {
                     return [];
                 },
                 notify: true
@@ -136,7 +136,7 @@
         },
         _readAll () {
             this.fire('notifications-read-all');
-            this.notifications.forEach((notification, index) => {
+            this.notifications.forEach(function (notification, index) {
                 this.set(`notifications.${index}.read`, true);
             });
         },
@@ -147,19 +147,19 @@
             return this._computeUnread().length;
         },
         _computeUnread () {
-            return this.notifications.filter(notification => !notification.read)
+            return this.notifications.filter(function (notification) { return !notification.read; })
         },
         _computeReadClass (read) {
             return read ? 'read' : 'unread';
         },
         _onNotificationTap (e) {
-            let notification = e.model.get('notification'),
+            var notification = e.model.get('notification'),
                 index = e.model.get('index');
             this.fire('notifications-read', notification);
             this.set(`notifications.${index}.read`, true);
         },
         _computeNotificationUrl (notification) {
-            let path = '/notifications';
+            var path = '/notifications';
             notification.meta = notification.meta || {};
             notification.meta.item = notification.meta.item || {};
 
@@ -187,7 +187,7 @@
         },
 
         _getItemLink (item) {
-            let link = '/notifications';
+            var link = '/notifications';
 
             if (item.type === 'share') {
                 link = `/shared/${item.id}`;
@@ -203,7 +203,7 @@
         },
 
         _getUpdateLink (notification) {
-            let link = '/notifications';
+            var link = '/notifications';
 
             if (notification.category === 'updates') {
                 if (notification.meta.url) {
