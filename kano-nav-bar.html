@@ -45,7 +45,7 @@ Custom property | Description | Default
         font-smoothing: antialiased;
         @apply(--layout-vertical);
         font-weight: 700;
-        --kano-nav-bar-highlight-color: #66bed3;
+        --kano-nav-bar-highlight-color: #4FB8DE;
         font-family: var(--kano-nav-bar-font-family);
     }
     /* Buttons will keep their font family unless you target them directly */
@@ -87,12 +87,14 @@ Custom property | Description | Default
         margin: 0px;
         padding: 0px;
     }
+    .notifications-icon {
+        height: 20px;
+    }
     .page-width {
         position: relative;
-        max-width: 900px;
         margin: auto;
         padding: 0 20px;
-        height: 70px;
+        height: 46px;
         @apply(--layout-flex);
         @apply(--layout-horizontal);
         @apply(--layout-justify);
@@ -131,6 +133,7 @@ Custom property | Description | Default
     :host .link {
         border: 0px;
         border-bottom: 4px solid transparent;
+        border-top: 4px solid transparent;
         @apply(--layout-center);
         @apply(--layout-horizontal);
         padding: 0 10px;
@@ -143,10 +146,13 @@ Custom property | Description | Default
     :host .menu-item>.link,
     :host .item,
     :host .auth-options button {
-        font-size: 19px;
+        font-size: 16px;
         font-weight: 700;
-        color: #414042;
+        color: #A6A6A6;
         cursor: pointer;
+    }
+    :host .menu-item>.link:focus {
+        color: var(--kano-nav-bar-highlight-color);
     }
     :host .auth-options {
         @apply(--layout-horizontal);
@@ -156,6 +162,7 @@ Custom property | Description | Default
         background-color: transparent;
         padding: 0 10px;
         padding-bottom: 4px;
+        color: #141414;
     }
     :host .auth-options button:focus {
         outline: none;
@@ -173,6 +180,11 @@ Custom property | Description | Default
     kano-user-badge {
         pointer-events: none;
         --kano-user-badge-progress-color: #ff842a;
+    }
+    #user-button .username {
+        margin-left: 12px;
+        font-weight: 400;
+        color: #141414;
     }
     :host kano-drop-down {
         position: absolute;
@@ -194,6 +206,7 @@ Custom property | Description | Default
     }
     :host .menu-item.notifications>.link:focus {
         transform: scale(1.3);
+        background-color: transparent;
     }
     :host .menu-item a {
         @apply(--layout-flex);
@@ -203,7 +216,7 @@ Custom property | Description | Default
         @apply(--layout-flex);
     }
     :host .separator {
-        height: 30px;
+        height: 17px;
         margin-left: 20px;
         margin-right: 20px;
         width: 3px;
@@ -242,7 +255,7 @@ Custom property | Description | Default
         padding: 23px 5px 15px 5px;
         display: inline-block;
         margin: 0px 2px;
-        font-size: 19px;
+        font-size: 16px;
         font-weight: 700;
         text-decoration: none;
         color: #414042;
@@ -261,14 +274,17 @@ Custom property | Description | Default
     }
     :host .logo {
         @apply(--layout-horizontal);
+        margin-left: 4vw;
+        margin-right: calc(4vw - 20px);
     }
     :host .logo .link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
     }
     :host .logo img {
-        width: 100px;
-        height: 40px;
+        margin-top: 2px;
+        width: 60px;
+        height: 18px;
     }
     :host .left,
     :host .right,
@@ -288,11 +304,23 @@ Custom property | Description | Default
         background-color: transparent;
         padding: 0px;
     }
+    @media screen and (max-width: 960px) {
+        :host #user-button .username {
+            display: none;
+        }
+    }
     @media screen and (max-width: 768px) {
+        :host .logo img {
+            margin-bottom: 2px;
+            margin-top: 0px;
+        }
+        :host .no-mobile {
+            display: none;
+        }
         :host .page-width {
             height: auto;
             padding: 0px;
-            padding-top: 70px;
+            padding-top: 46px;
         }
         :host .hamburger {
             display: flex;
@@ -304,7 +332,7 @@ Custom property | Description | Default
         :host .left {
             position: absolute;
             top: 0px;
-            height: 70px;
+            height: 46px;
         }
         :host .right {
             right: 0px;
@@ -314,7 +342,6 @@ Custom property | Description | Default
         }
         :host #nav-items {
             @apply(--layout-vertical);
-            @apply(--layout-start);
         }
         :host .separator {
             @apply(--layout-self-stretch);
@@ -324,7 +351,6 @@ Custom property | Description | Default
         }
         :host .center li.menu-item {
             @apply(--layout-wrap);
-            @apply(--layout-self-stretch);
             width: auto;
             box-sizing: border-box;
         }
@@ -358,11 +384,8 @@ Custom property | Description | Default
                 border-radius: none;
             };
         }
-        :host #make-drop-down kano-drop-down-item {
-            padding-left: 20px;
-        }
-        :host #community-drop-down kano-drop-down-item {
-            padding-left: 35px;
+        :host .logo {
+            margin-left: 0px;
         }
         :host .logo .link {
             padding: 0 10px;
@@ -391,23 +414,16 @@ Custom property | Description | Default
     }
     :host([is-mobile]) .right kano-drop-down#notifications-drop-down {
         position: fixed;
-        top: 70px;
+        top: 46px;
         right: 4px;
     }
     :host([is-mobile]) .right kano-drop-down#user-drop-down {
         position: fixed;
-        top: 70px;
+        top: 46px;
         right: 4px;
     }
-    :host([is-mobile]) ::content .right kano-drop-down#notifications-drop-down #caret {
+    :host([is-mobile]) .right ::content kano-drop-down#notifications-drop-down #caret {
         right: 90px;
-    }
-    /* FIXME Limitation of the current CSS scoping polyfill forces us to do that */
-    :host([is-mobile]) ::content .center kano-drop-down .drop-down {
-        width: 100%;
-        box-shadow: none;
-        position: relative;
-        padding: 0px;
     }
     :host .unread-count {
         position: absolute;
@@ -415,15 +431,15 @@ Custom property | Description | Default
         border: 2px solid #fff;
         line-height: 16px;
         text-align: center;
-        background-color: #EE5F53;
+        background-color: #fc823f;
         color: #fff;
-        top: 25px;
+        top: 20px;
         right: 0px;
         margin-left: 5px;
         margin-top: -16px;
         font-weight: bold;
         font-size: 0.7em;
-        padding: 0 3px;
+        padding: 0 2px;
         min-width: 10px;
         border-radius: 5px;
         pointer-events: none;
@@ -445,46 +461,15 @@ Custom property | Description | Default
                 </div>
                 <div class="center">
                     <ul id="nav-items" class="nav-menu-items" hidden$="[[!_isMenuOpened(isMobile, menuOpened)]]">
-                        <li class="menu-item make-items make-nav">
-                            <button class="link" id="make-button" on-tap="_toggleOpen">
-                                <span>Make</span>
-                                <iron-icon icon="navbar-icons:chevron-down"></iron-icon>
-                            </button>
-                            <kano-drop-down id="make-drop-down" on-tap="_stopPropagation">
-                                <ul class="drop-down-content">
-                                    <template is="dom-repeat" items="[[makeItems]]">
-                                        <li>
-                                            <a href$="[[item.url]]" target="_blank" class="item">
-                                                <kano-drop-down-item icon="[[item.icon]]">[[item.name]]</kano-drop-down-item>
-                                            </a>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </kano-drop-down>
+                        <li class="menu-item">
+                            <a href$="[[worldRoot]]/shares" class="link">Creations</a>
                         </li>
                         <li class="menu-item">
-                            <a href$="[[worldRoot]]/projects" class="link">Projects</a>
+                            <a href$="[[worldRoot]]/projects" class="link">Make</a>
                         </li>
-                        <li class="menu-item community-nav">
-                            <button class="link" id="community-button" on-tap="_toggleOpen">
-                                <span>Community</span>
-                                <iron-icon icon="navbar-icons:chevron-down"></iron-icon>
-                            </button>
-                            <kano-drop-down id="community-drop-down" on-tap="_stopPropagation">
-                                <ul class="drop-down-content">
-                                    <template is="dom-repeat" items="[[communityItems]]">
-                                        <li>
-                                            <a href$="[[item.url]]" target$="[[item.target]]" class="item">
-                                                <kano-drop-down-item>[[item.name]]</kano-drop-down-item>
-                                            </a>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </kano-drop-down>
-                        </li>
-                        <li class="separator"></li>
+                        <li class="separator no-mobile"></li>
                         <li class="menu-item">
-                            <a href="http://www.kano.me" class="link">Products</a>
+                            <a href="http://www.kano.me" class="link">Shop</a>
                         </li>
                     </ul>
                 </div>
@@ -499,9 +484,11 @@ Custom property | Description | Default
                                 <kano-notifications notifications="{{notifications}}" on-read="_onRead" on-read-all="_onReadAll" unread-count="{{unread}}" world-root="[[worldRoot]]" username="[[user.username]]"></kano-notifications>
                             </kano-drop-down>
                         </li>
+                        <li class="separator no-mobile"></li>
                         <li id="avatar-menu" class="menu-item avatar">
                             <button class="link" id="user-button" on-tap="_toggleOpen">
-                                <kano-user-badge user="[[user]]" xp="[[xp]]" level="{{level}}" default-avatar="{{defaultAvatar}}"></kano-user-badge>
+                                <kano-user-badge user="[[user]]" xp="[[xp]]" level="{{level}}" default-avatar="{{defaultAvatar}}" radius="40" stroke-width="4"></kano-user-badge>
+                                <span class="username no-mobile">[[user.username]]</span>
                             </button>
                             <kano-drop-down id="user-drop-down" caret-align="right" on-tap="_stopPropagation">
                                 <ul>
@@ -608,31 +595,6 @@ Custom property | Description | Default
             this.unlisten(document, 'tap', '_onDocumentTap');
         },
         ready () {
-            this.communityItems = [{
-                name: 'Users',
-                url: this.worldRoot + '/users',
-                target: '_self'
-            },{
-                name: "Creations",
-                url: this.worldRoot + '/shares',
-                target: '_self'
-            },{
-                name: "Leaderboard",
-                url: this.worldRoot + '/leaderboards',
-                target: '_self'
-            },{
-                name: "Forum",
-                url: this.worldRoot + '/forum',
-                target: '_self'
-            },{
-                name: "Blog",
-                url: 'http://blog.kano.me',
-                target: '_blank'
-            },{
-                name: "Help Center",
-                url: '//help.kano.me',
-                target: '_blank'
-            }];
             this.makeItems = [{
                 name: 'Kano Code',
                 url: '//apps.kano.me',

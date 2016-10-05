@@ -81,7 +81,7 @@
     </style>
     <template>
         <template is="dom-repeat" items="[[notifications]]" as="notification">
-            <a href$="[[_computeNotificationUrl(notification)]]" target="_blank" class="notification" on-tap="_onNotificationTap">
+            <a href$="[[_computeNotificationUrl(notification)]]" class="notification" on-tap="_onNotificationTap">
                 <kano-drop-down-item>
                     <div class$="notification-line [[_computeReadClass(notification.read)]]">
                         <span class="time">
