@@ -191,10 +191,6 @@ Custom property | Description | Default
         top: 100%;
         left: 0px;
     }
-    :host .link:hover,
-    :host .link:focus {
-        border-bottom-color: var(--kano-nav-bar-highlight-color);
-    }
     :host .menu-item.avatar>.link:hover,
     :host .menu-item.avatar>.link:focus,
     :host .menu-item.notifications>.link:hover,
@@ -214,6 +210,15 @@ Custom property | Description | Default
     }
     :host .link {
         @apply(--layout-flex);
+        transition: color 0.3s ease-in;
+    }
+    .link:hover,
+    .link:focus {
+        color: black;
+    }
+    .link.selected {
+        color: var(--kano-nav-bar-highlight-color) !important;
+        border-bottom-color: var(--kano-nav-bar-highlight-color);
     }
     :host .separator {
         height: 17px;
@@ -466,10 +471,10 @@ Custom property | Description | Default
                 <div class="center">
                     <ul id="nav-items" class="nav-menu-items" hidden$="[[!_isMenuOpened(isMobile, menuOpened)]]">
                         <li class="menu-item">
-                            <a href$="[[worldRoot]]/shares" class="link">Creations</a>
+                            <a href$="[[worldRoot]]/shares" class$="link [[_computeLinkClass('shares', selectedLink)]]">Creations</a>
                         </li>
                         <li class="menu-item">
-                            <a href$="[[worldRoot]]/projects" class="link">Make</a>
+                            <a href$="[[worldRoot]]/projects" class$="link [[_computeLinkClass('projects', selectedLink)]]"`>Make</a>
                         </li>
                         <li class="separator no-mobile"></li>
                         <li class="menu-item">
@@ -578,6 +583,13 @@ Custom property | Description | Default
                 value: 'https://world.kano.me'
             },
             /**
+             * Current view to highlight
+             */
+            selectedLink: {
+                type: String,
+                value: null
+            },
+            /**
              * Is the left menu opened
              */
             menuOpened: {
@@ -643,6 +655,9 @@ Custom property | Description | Default
         },
         _signup () {
             this.fire('signup');
+        },
+        _computeLinkClass (expectedPath, actualPath) {
+             return expectedPath === actualPath ? 'selected' : '';
         },
         _isMenuOpened (isMobile, menuOpened) {
             return isMobile && menuOpened || !isMobile;
