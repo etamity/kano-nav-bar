@@ -94,7 +94,6 @@ Custom property | Description | Default
         position: relative;
         margin: auto;
         padding: 0 20px;
-        height: 46px;
         @apply(--layout-flex);
         @apply(--layout-horizontal);
         @apply(--layout-justify);
@@ -285,24 +284,29 @@ Custom property | Description | Default
         @apply(--layout-horizontal);
         margin-left: 4vw;
         margin-right: calc(4vw - 20px);
+        align-items: center;
     }
     :host .logo .link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
     }
     :host .logo img {
-        margin-top: 2px;
-        width: 60px;
-        height: 18px;
+        margin-top: 5px;
+        width: 70px;
+        height: 35px;
     }
+    :host .center,
     :host .left,
-    :host .right,
-    :host .center {
+    :host .right  {
         @apply(--layout-horizontal);
     }
     :host .right,
     :host .center {
         @apply(--layout-flex);
+    }
+    :host .left,
+    :host .right {
+        height: 60px;
     }
     :host .right {
         @apply(--layout-end-justified);
@@ -329,7 +333,7 @@ Custom property | Description | Default
         :host .page-width {
             height: auto;
             padding: 0px;
-            padding-top: 46px;
+            padding-top: 60px;
         }
         :host .hamburger {
             display: flex;
@@ -341,13 +345,13 @@ Custom property | Description | Default
         :host .left {
             position: absolute;
             top: 0px;
-            height: 46px;
         }
         :host .right {
             right: 0px;
         }
         :host .left {
             left: 0px;
+
         }
         :host #nav-items {
             @apply(--layout-vertical);
@@ -464,7 +468,7 @@ Custom property | Description | Default
                     </button>
                     <div class="logo">
                         <a href="/" class="link">
-                            <img src$="[[assetsPath]]kano.svg" alt="" />
+                            <img src$="[[assetsPath]]kano_logo.png" alt="" />
                         </a>
                     </div>
                 </div>
