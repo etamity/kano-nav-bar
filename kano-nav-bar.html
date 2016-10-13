@@ -94,7 +94,6 @@ Custom property | Description | Default
         position: relative;
         margin: auto;
         padding: 0 20px;
-        height: 46px;
         @apply(--layout-flex);
         @apply(--layout-horizontal);
         @apply(--layout-justify);
@@ -191,10 +190,6 @@ Custom property | Description | Default
         top: 100%;
         left: 0px;
     }
-    :host .link:hover,
-    :host .link:focus {
-        border-bottom-color: var(--kano-nav-bar-highlight-color);
-    }
     :host .menu-item.avatar>.link:hover,
     :host .menu-item.avatar>.link:focus,
     :host .menu-item.notifications>.link:hover,
@@ -214,6 +209,15 @@ Custom property | Description | Default
     }
     :host .link {
         @apply(--layout-flex);
+        transition: color 0.3s ease-in;
+    }
+    .link:hover,
+    .link:focus {
+        color: black;
+    }
+    .link.selected {
+        color: var(--kano-nav-bar-highlight-color) !important;
+        border-bottom-color: var(--kano-nav-bar-highlight-color);
     }
     :host .separator {
         height: 17px;
@@ -280,24 +284,29 @@ Custom property | Description | Default
         @apply(--layout-horizontal);
         margin-left: 4vw;
         margin-right: calc(4vw - 20px);
+        align-items: center;
     }
     :host .logo .link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
     }
     :host .logo img {
-        margin-top: 2px;
-        width: 60px;
-        height: 18px;
+        margin-top: 5px;
+        width: 70px;
+        height: 35px;
     }
+    :host .center,
     :host .left,
-    :host .right,
-    :host .center {
+    :host .right  {
         @apply(--layout-horizontal);
     }
     :host .right,
     :host .center {
         @apply(--layout-flex);
+    }
+    :host .left,
+    :host .right {
+        height: 60px;
     }
     :host .right {
         @apply(--layout-end-justified);
@@ -324,7 +333,7 @@ Custom property | Description | Default
         :host .page-width {
             height: auto;
             padding: 0px;
-            padding-top: 46px;
+            padding-top: 60px;
         }
         :host .hamburger {
             display: flex;
@@ -336,7 +345,6 @@ Custom property | Description | Default
         :host .left {
             position: absolute;
             top: 0px;
-            height: 46px;
         }
         :host .right {
             right: 0px;
@@ -459,17 +467,17 @@ Custom property | Description | Default
                     </button>
                     <div class="logo">
                         <a href="/" class="link">
-                            <img src$="[[assetsPath]]kano.svg" alt="" />
+                            <img src$="[[assetsPath]]kano_logo.svg" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="center">
                     <ul id="nav-items" class="nav-menu-items" hidden$="[[!_isMenuOpened(isMobile, menuOpened)]]">
                         <li class="menu-item">
-                            <a href$="[[worldRoot]]/shares" class="link">Creations</a>
+                            <a href$="[[worldRoot]]/shares" class$="link [[_computeLinkClass('shares', selectedLink)]]">Creations</a>
                         </li>
                         <li class="menu-item">
-                            <a href$="[[worldRoot]]/projects" class="link">Make</a>
+                            <a href$="[[worldRoot]]/projects" class$="link [[_computeLinkClass('projects', selectedLink)]]"`>Make</a>
                         </li>
                         <li class="separator no-mobile"></li>
                         <li class="menu-item">
@@ -578,6 +586,13 @@ Custom property | Description | Default
                 value: 'https://world.kano.me'
             },
             /**
+             * Current view to highlight
+             */
+            selectedLink: {
+                type: String,
+                value: null
+            },
+            /**
              * Is the left menu opened
              */
             menuOpened: {
@@ -643,6 +658,9 @@ Custom property | Description | Default
         },
         _signup () {
             this.fire('signup');
+        },
+        _computeLinkClass (expectedPath, actualPath) {
+             return expectedPath === actualPath ? 'selected' : '';
         },
         _isMenuOpened (isMobile, menuOpened) {
             return isMobile && menuOpened || !isMobile;
