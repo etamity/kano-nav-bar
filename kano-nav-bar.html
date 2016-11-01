@@ -184,6 +184,8 @@ Custom property | Description | Default
         margin-left: 12px;
         font-weight: 400;
         color: #141414;
+        /* Fix for Safari */
+        align-self: center;
     }
     :host kano-drop-down {
         position: absolute;
@@ -206,6 +208,8 @@ Custom property | Description | Default
     :host .menu-item a {
         @apply(--layout-flex);
         text-align: center;
+        /* IE11 and EDGE fix */
+        flex-basis: auto;
     }
     :host .link {
         @apply(--layout-flex);
@@ -289,11 +293,15 @@ Custom property | Description | Default
     :host .logo .link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
+        /* IE11 and EDGE fix */
+        flex-basis: auto;
     }
     :host .logo img {
         margin-top: 5px;
         width: 70px;
         height: 35px;
+        /* IE11 and EDGE fix */
+        min-width: 70px;
     }
     :host .center,
     :host .left,
@@ -477,7 +485,7 @@ Custom property | Description | Default
                             <a href$="[[worldRoot]]/shares" class$="link [[_computeLinkClass('shares', selectedLink)]]">Creations</a>
                         </li>
                         <li class="menu-item">
-                            <a href$="[[worldRoot]]/projects" class$="link [[_computeLinkClass('projects', selectedLink)]]"`>Make</a>
+                            <a href$="[[worldRoot]]/projects" class$="link [[_computeLinkClass('projects', selectedLink)]]">Make</a>
                         </li>
                         <li class="separator no-mobile"></li>
                         <li class="menu-item">
