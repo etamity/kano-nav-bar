@@ -293,6 +293,7 @@ Custom property | Description | Default
     :host .logo .link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
+        height: 100%;
         /* IE11 and EDGE fix */
         flex-basis: auto;
     }
@@ -379,7 +380,6 @@ Custom property | Description | Default
             border-bottom: 0px;
             border-left-color: var(--kano-nav-bar-highlight-color);
         }
-        :host .left .link:hover,
         :host .left .link:focus,
         :host .right .link:hover,
         :host .right .link:focus {
@@ -392,6 +392,7 @@ Custom property | Description | Default
             padding: 15px 5px 15px 35px;
             border-bottom: 0px;
             border-left: 4px solid transparent;
+            box-sizing: border-box;
             margin: 0px;
         }
         kano-drop-down {
@@ -405,13 +406,17 @@ Custom property | Description | Default
             };
         }
         :host .logo {
+            height: 100%;
             margin-left: 0px;
+            min-height: 60px;
         }
         :host .logo .link {
             padding: 0 10px;
         }
         :host #notifications-button,
         :host #user-button {
+            height: 100%;
+            min-height: 60px;
             padding: 0 10px;
         }
         :host #notifications-button:hover,
