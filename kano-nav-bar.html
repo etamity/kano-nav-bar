@@ -708,6 +708,8 @@ Custom property | Description | Default
             return user && user.admin_level > 0;
         },
         _stopPropagation (e) {
+            this.menuOpened = false;
+            this._onDocumentTap();
             e.stopPropagation();
         }
     });
