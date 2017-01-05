@@ -505,7 +505,7 @@ Custom property | Description | Default
                                 <img src$="[[assetsPath]]notification.svg" class="notifications-icon" alt="notifications-icon" />
                             </button>
                             <div class="unread-count" hidden$="[[!unread]]">[[unread]]</div>
-                            <kano-drop-down id="notifications-drop-down" caret-align="right" on-tap="_stopPropagation">
+                            <kano-drop-down id="notifications-drop-down" caret-align="right" on-tap="_hideDropdown">
                                 <kano-notifications notifications="{{notifications}}" on-read="_onRead" on-read-all="_onReadAll" unread-count="{{unread}}" world-root="[[worldRoot]]" username="[[user.username]]"></kano-notifications>
                             </kano-drop-down>
                         </li>
@@ -515,7 +515,7 @@ Custom property | Description | Default
                                 <kano-user-badge user="[[user]]" xp="[[xp]]" level="{{level}}" default-avatar="{{defaultAvatar}}" radius="40" stroke-width="4"></kano-user-badge>
                                 <span class="username no-mobile">[[user.username]]</span>
                             </button>
-                            <kano-drop-down id="user-drop-down" caret-align="right" on-tap="_stopPropagation">
+                            <kano-drop-down id="user-drop-down" caret-align="right" on-tap="_hideDropdown">
                                 <ul>
                                     <a href$="[[worldRoot]]/users/[[user.username]]" class="item">
                                         <kano-drop-down-item>
@@ -621,10 +621,10 @@ Custom property | Description | Default
             }
         },
         attached () {
-            this.listen(document, 'tap', '_onDocumentTap');
+            this.listen(document, 'tap', '_closeDropdowns');
         },
         detached () {
-            this.unlisten(document, 'tap', '_onDocumentTap');
+            this.unlisten(document, 'tap', '_closeDropdowns');
         },
         ready () {
             this.makeItems = [{
@@ -657,7 +657,7 @@ Custom property | Description | Default
         _isAuthenticated (user) {
             return !!user;
         },
-        _onDocumentTap (e) {
+        _closeDropdowns (e) {
             var dropDowns = Polymer.dom(this.root).querySelectorAll('kano-drop-down');
             for (var i = 0; i < dropDowns.length; i++) {
                 dropDowns[i].close();
@@ -707,8 +707,10 @@ Custom property | Description | Default
         _isUserAdmin (user) {
             return user && user.admin_level > 0;
         },
-        _stopPropagation (e) {
+        _hideDropdown (e) {
             e.stopPropagation();
+            this.menuOpened = false;
+            this._closeDropdowns();
         }
     });
 </script>
