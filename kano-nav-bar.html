@@ -707,10 +707,13 @@ Custom property | Description | Default
         _isUserAdmin (user) {
             return user && user.admin_level > 0;
         },
-        _stopPropagation (e) {
+        _hideDropdown() {
             this.menuOpened = false;
             this._onDocumentTap();
+        },
+        _stopPropagation (e) {
             e.stopPropagation();
+            this._hideDropdown();
         }
     });
 </script>
